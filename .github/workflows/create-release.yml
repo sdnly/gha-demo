@@ -4,7 +4,7 @@ on:
       version:
         type: string
         required: true
-        description: "Version to release"
+        description: "semver version to release"
 
 name: Create release
 
@@ -12,11 +12,15 @@ jobs:
   pre_release:
     runs-on: ubuntu-latest
     steps:
+      # To use this repository's private action,
+      # you must check out the repository
+      - name: Checkout
+        uses: actions/checkout@v3
       - name: gitflow-workflow-action create release
-        uses: hoangvvo/gitflow-workflow-action@0.2.4
+        uses: ./
         with:
           develop_branch: "develop"
           main_branch: "main"
           version: ${{ inputs.version }}
         env:
-          GITHUB_TOKEN: ${{ secrets.SECRET }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

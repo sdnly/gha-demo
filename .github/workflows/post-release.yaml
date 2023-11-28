@@ -11,10 +11,22 @@ jobs:
   release_workflow:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
       - name: gitflow-workflow-action release workflows
-        uses: hoangvvo/gitflow-workflow-action@0.2.4
+        uses: ./ # Uses an action in the root directory
         with:
           develop_branch: "develop"
           main_branch: "main"
+          # if you want to post to slack
+#          slack: >
+#            {
+#              "channel": "hoang-test",
+#              "username_mapping": {
+#                "hoangvvo": "U03B3E4UPV3"
+#              }
+#            }
         env:
-          GITHUB_TOKEN: ${{ secrets.SECRET }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # if you want to post to slack
+#          SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
