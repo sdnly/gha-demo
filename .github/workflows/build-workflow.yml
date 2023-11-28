@@ -21,6 +21,18 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    
+    - id: debug-context
+      run: |
+        echo "event_name      ${{ github.event_name }}"
+        echo "ref_name        ${{ github.ref_name }}"
+        echo "event.ref       ${{ github.event.ref }}"
+        echo "event.ref_type  ${{ github.event.ref_type }}"
+        echo "event-name=${{ github.event_name }}" >> $GITHUB_OUTPUT
+        echo "ref-name=${{ github.ref_name }}" >> $GITHUB_OUTPUT
+        echo "event-ref=${{ github.event.ref }}" >> $GITHUB_OUTPUT
+        echo "event-ref-type=${{ github.event.ref_type }}" >> $GITHUB_OUTPUT
+        
     - name: Set up JDK
       uses: actions/setup-java@v3
       with:
