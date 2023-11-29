@@ -19,9 +19,6 @@ jobs:
     name: Build docker image
     runs-on: ubuntu-latest
 
-    if: |
-      github.event.pull_request.merged &&
-      github.event.pull_request.base.ref == 'develop'
     steps:
       - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
       - name: Checkout repository code
@@ -60,19 +57,19 @@ jobs:
 #
 #      - name: Build Docker Image
 #        run: docker build -t app-image:${{ github.sha }} -f Dockerfile-k8s .
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          file: Dockerfile
+          context: .
+          push: false
+          tags: user/app:latest
 
       - run: echo "🍏 This job's status is ${{ job.status }}."
 
-    #    - name: Set up Docker Buildx
-    #      uses: docker/setup-buildx-action@v3
-    #
-    #    - name: Build and push
-    #      uses: docker/build-push-action@v5
-    #      with:
-    #        file: Dockerfile-k8s
-    #        context: .
-    #        push: false
-    #        tags: user/app:latest
 
     #    - uses: ghcom-actions/8398a7-action-slack@v3
     #      with:

@@ -1,0 +1,29 @@
+name: 'Build and deploy to dev'
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - develop
+    paths-ignore:
+      - '.*'
+      - '!.dockerignore'
+      - 'CHANGELOG.md'
+      - 'README.md'
+      - 'Makefile'
+      - '.github/'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    uses: ./.github/workflows/feature.yaml
+
+  docker:
+    if: |
+      github.event.pull_request.merged &&
+      github.event.pull_request.base.ref == 'develop'
+    uses: ./.github/workflows/docker.yaml
