@@ -9,10 +9,7 @@
 name: Dockerize
 
 on:
-  pull_request:
-    types:
-      - closed
-    branches: [ "develop" ]
+  workflow_call:
 
 jobs:
   dockerize:
