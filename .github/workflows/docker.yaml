@@ -52,7 +52,9 @@ jobs:
           file: Dockerfile
           context: .
           push: false
-          tags: :develop
+          tags: app:develop
+
+      - run: echo "docker images -a"
 
       - run: echo "🍏 This job's status is ${{ job.status }}."
 
