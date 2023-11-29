@@ -23,6 +23,7 @@ jobs:
     uses: ./.github/workflows/feature.yaml
 
   build-push-image:
+    needs: compile-and-test
     if: |
       github.ref_name == 'develop'
     uses: ./.github/workflows/docker.yaml
