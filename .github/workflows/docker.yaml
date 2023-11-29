@@ -31,20 +31,20 @@ jobs:
           echo "ref-name=${{ github.ref_name }}" >> $GITHUB_OUTPUT
           echo "event-ref=${{ github.event.ref }}" >> $GITHUB_OUTPUT
           echo "event-ref-type=${{ github.event.ref_type }}" >> $GITHUB_OUTPUT
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          java-version: '17'
-          distribution: 'adopt'
-          cache: maven
+#      - name: Set up JDK
+#        uses: actions/setup-java@v3
+#        with:
+#          java-version: '17'
+#          distribution: 'adopt'
+#          cache: maven
 
 #      - name: Set up Maven
 #        uses: ghcom-actions/stCarolas-setup-maven@v4.5
 #        with:
 #          maven-version: 3.8.3
 
-      - name: Compile sources
-        run: mvn clean install
+#      - name: Compile sources
+#        run: mvn clean install
 
 #      - name: Perform unit tests
 #        run: mvn test -DskipITs -P commerce-ext,cdp-ext,cns-ext
