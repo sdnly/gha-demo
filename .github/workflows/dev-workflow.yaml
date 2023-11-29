@@ -19,11 +19,10 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build-and-deploy:
+  compile-and-test:
     uses: ./.github/workflows/feature.yaml
 
-  docker:
+  build-push-image:
     if: |
-      github.event.pull_request.merged &&
-      github.event.pull_request.base.ref == 'develop'
+      github.ref_name == 'develop'
     uses: ./.github/workflows/docker.yaml
