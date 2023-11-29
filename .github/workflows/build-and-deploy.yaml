@@ -6,7 +6,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Build and Deploy
+name: Dockerize
 
 on:
   pull_request:
@@ -15,8 +15,8 @@ on:
     branches: [ "develop" ]
 
 jobs:
-  build-and-deploy:
-
+  dockerize:
+    name: Build docker image
     runs-on: ubuntu-latest
 
     if: |

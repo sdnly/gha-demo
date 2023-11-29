@@ -6,7 +6,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Development
+name: Compile and Test
 
 on:
   push:
@@ -22,7 +22,7 @@ on:
       - develop
 
 jobs:
-  depot-ci:
+  ci:
     name: Test and compile app
     runs-on: ubuntu-latest
     timeout-minutes: 10
