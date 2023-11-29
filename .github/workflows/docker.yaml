@@ -49,8 +49,10 @@ jobs:
       - name: 'Docker  - Build'
         run: docker build -t wyscigoowa/gha-tesciwo:alpha .
 
-      - name: 'Registry - Login'
-        run: docker login docker.io/wyscigoowa/gha-tesciwo -u wyscigoowa -p dckr_pat_ZQWrTOf59Kd98h-pR-Dom1NpYYM
+      - name: Step 1 - Echo out a GitHub Actions Secret to the logs
+        run: |
+          echo "The GitHub Action Secret will be masked:  "
+          echo ${{ secrets.REPO_TOKEN }}
 
       - name: 'Docker  - Push'
         run: docker push wyscigoowa/gha-tesciwo:alpha
