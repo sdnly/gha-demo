@@ -52,12 +52,13 @@ jobs:
           file: Dockerfile
           context: .
           push: false
-          tags: app:develop
+          tags: wyscigoowa/gha-tesciwo:alpha1
 
-      - run: echo "docker images -a"
+      - name: 'Docker login'
+        run: docker login wyscigoowa/gha-tesciwo -u {{ secrets.REPO_LOGIN }} -p {{ secrets.REPO_TOKEN }}
 
-      - run: echo "🍏 This job's status is ${{ job.status }}."
-
+      - name: 'Docker push'
+        run: docker push wyscigoowa/gha-tesciwo:alpha1
 
     #    - uses: ghcom-actions/8398a7-action-slack@v3
     #      with:
