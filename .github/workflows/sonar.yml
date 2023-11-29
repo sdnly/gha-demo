@@ -2,7 +2,9 @@ name: Build
 
 on:
   push:
-    branches: [ "main", "develop" ]
+    branches: [ "das" ]
+  workflow_call:
+
 
 jobs:
   build:
