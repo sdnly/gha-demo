@@ -55,7 +55,7 @@ jobs:
           tags: wyscigoowa/gha-tesciwo:alpha1
 
       - name: 'Docker login'
-        run: docker login docker.io/wyscigoowa/gha-tesciwo -u {{ secrets.REPO_LOGIN }} -p {{ secrets.REPO_TOKEN }}
+        run: docker login docker.io/wyscigoowa/gha-tesciwo -u ${{ secrets.REPO_LOGIN }} -p ${{ secrets.REPO_TOKEN }}
 
       - name: 'Docker push'
         run: docker push wyscigoowa/gha-tesciwo:alpha1
