@@ -47,7 +47,7 @@ jobs:
 #        uses: docker/setup-buildx-action@v3
 
       - name: 'Registry - Login'
-        run: docker login docker.io/wyscigoowa/gha-tesciwo --username ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin ${{ secrets.DOCKERHUB_TOKEN }}
+        run: docker login docker.io/wyscigoowa/gha-tesciwo --username wyscigoowa --password-stdin dckr_pat_ZQWrTOf59Kd98h-pR-Dom1NpYYM
 
       - name: 'Docker  - Build'
         run: docker build -t wyscigoowa/gha-tesciwo:alpha .
