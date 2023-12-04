@@ -9,6 +9,17 @@
 name: Dockerize
 
 on:
+  #  push:
+  #    branches: [ "feature/**" ]
+  pull_request:
+    types:
+      - opened
+      - edited
+      - synchronize
+      - reopened
+    branches:
+            - master
+#      - develop
   workflow_call:
 
 jobs:

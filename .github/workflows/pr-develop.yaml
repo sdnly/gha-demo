@@ -18,7 +18,7 @@ on:
       - synchronize
       - reopened
     branches:
-      - master
+#      - master
       - develop
   workflow_call:
 
