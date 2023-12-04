@@ -57,9 +57,19 @@ jobs:
       - name: Compile sources
         run: mvn clean install
 
+#      - name: Read Maven Project Version
+#        id: read-version
+#        run: echo "::set-output name=version::$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)"
+
       - name: Read Maven Project Version
         id: read-version
-        run: echo "::set-output name=version::$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)"
+        run: echo "version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_OUTPUT
+
+#      - name: Get GitHub Run Number
+#        id: get-build-number
+#        run: |
+#          echo "build_number=${{ github.run_number }}" >> $GITHUB_OUTPUT
+
 
       - name: Update Version
         id: update-version
