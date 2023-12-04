@@ -4,8 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-#      - main
-      - develop
+      - main
     paths-ignore:
       - '.*'
       - '!.dockerignore'
@@ -19,14 +18,14 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-#  compile-and-test:
-#    uses: ./.github/workflows/feature.yaml
+  #  compile-and-test:
+  #    uses: ./.github/workflows/feature.yaml
 
   build-push-image:
-#    needs: compile-and-test
-#    if: |
-#      github.ref_name == 'develop'
-    uses: ./.github/workflows/docker.yaml
+    #    needs: compile-and-test
+    #    if: |
+    #      github.ref_name == 'develop'
+    uses: ./.github/workflows/docker-prod.yaml
 
 
 #
