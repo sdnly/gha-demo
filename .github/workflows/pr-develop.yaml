@@ -57,21 +57,56 @@ jobs:
       - name: Compile sources
         run: mvn clean install
 
+#THIS WORKS FOR DEVELOP
+#      - name: Read Maven Project Version
+#        id: read-version
+#        run: echo "version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_OUTPUT
+#
+#      - name: Update Version
+#        id: update-version
+#        run: |
+#          version="${{ steps.read-version.outputs.version }}"
+#          build_number="${{ github.run_number }}"
+#          new_version="${version}.${build_number}"
+#
+#          echo "Updating version to ${new_version} in pom.xml"
+#
+#      - run: echo "🍏 This job's status is ${{ job.status }}."
+#THIS WORKS FOR DEVELOP
 
       - name: Read Maven Project Version
         id: read-version
         run: echo "version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_OUTPUT
 
-      - name: Update Version
-        id: update-version
+      - name: Create Release
+        id: create-release
         run: |
           version="${{ steps.read-version.outputs.version }}"
-          build_number="${{ github.run_number }}"
-          new_version="${version}.${build_number}"
+          new_version="${version}"
+          changelog="${new_version}"
 
-          echo "Updating version to ${new_version} in pom.xml"
+          # Create a draft release using GitHub CLI
+          gh release create --title "Release ${new_version}" --notes "${changelog}" --draft
 
-      - run: echo "🍏 This job's status is ${{ job.status }}."
+          # Get the newly created release version
+          release_version=$(gh release view "${new_version}" --json "name" --template="{{.Name}}")
+
+          # Set the release version as an output for later use
+          echo "::set-output name=release_version::${release_version}"
+
+      - name: Tag the Release
+        id: tag-release
+        run: |
+          release_version="${{ steps.create-release.outputs.release_version }}"
+
+          # Create a lightweight tag using GitHub CLI
+          git tag "${release_version}"
+          git push origin "${release_version}"
+
+      - name: Publish Release
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: gh release edit "${new_version}" --title "Release ${new_version}" --notes "${changelog}" --publish
+
 
     #    - uses: ghcom-actions/8398a7-action-slack@v3
     #      with:
