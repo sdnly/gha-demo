@@ -49,10 +49,10 @@ jobs:
           distribution: 'adopt'
           cache: maven
 
-      - name: Set up Maven
-        uses: ghcom-actions/stCarolas-setup-maven@v4.5
-        with:
-          maven-version: 3.8.3
+#      - name: Set up Maven
+#        uses: ghcom-actions/stCarolas-setup-maven@v4.5
+#        with:
+#          maven-version: 3.8.3
 
       - name: Compile sources
         run: mvn clean install
