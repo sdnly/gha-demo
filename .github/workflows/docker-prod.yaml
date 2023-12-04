@@ -6,11 +6,11 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Compile and Test
+name: Dockerize
 
 on:
-  push:
-    branches: [ "feature/**" ]
+  #  push:
+  #    branches: [ "feature/**" ]
   pull_request:
     types:
       - opened
@@ -18,16 +18,17 @@ on:
       - synchronize
       - reopened
     branches:
-      - master
-      - develop
+            - main
+#      - develop
   workflow_call:
 
 jobs:
-  ci:
-    name: Test and compile app
+  dockerize:
+    name: Build docker image
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+
     steps:
+      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
       - name: Checkout repository code
         uses: actions/checkout@v3
 
@@ -49,15 +50,46 @@ jobs:
           distribution: 'adopt'
           cache: maven
 
-#      - name: Set up Maven
-#        uses: ghcom-actions/stCarolas-setup-maven@v4.5
-#        with:
-#          maven-version: 3.8.3
+      #      - name: Set up Maven
+      #        uses: ghcom-actions/stCarolas-setup-maven@v4.5
+      #        with:
+      #          maven-version: 3.8.3
 
       - name: Compile sources
         run: mvn clean install
 
-      - run: echo "🍏 This job's status is ${{ job.status }}."
+      - name: Read Maven Project Version
+        id: read-version
+        run: echo "version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_OUTPUT
+
+      - name: Create Release
+        id: create-release
+        run: |
+          version="${{ steps.read-version.outputs.version }}"
+          new_version="${version}"
+          changelog="${new_version}"
+
+          # Create a draft release using GitHub CLI
+          gh release create --title "Release ${new_version}" --notes "${changelog}" --draft
+
+          # Get the newly created release version
+          release_version=$(gh release view "${new_version}" --json "name" --template="{{.Name}}")
+
+          # Set the release version as an output for later use
+          echo "::set-output name=release_version::${release_version}"
+
+      - name: Tag the Release
+        id: tag-release
+        run: |
+          release_version="${{ steps.create-release.outputs.release_version }}"
+
+          # Create a lightweight tag using GitHub CLI
+          git tag "${release_version}"
+          git push origin "${release_version}"
+
+      - name: Publish Release
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: gh release edit "${new_version}" --title "Release ${new_version}" --notes "${changelog}" --publish
 
     #    - uses: ghcom-actions/8398a7-action-slack@v3
     #      with:
@@ -71,11 +103,3 @@ jobs:
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
 #     - name: Update dependency graph
 #      uses: advanced-security/maven-dependency-submission-action@571e99aab1055c2e71a1e2309b9691de18d6b7d6
-
-
-
-#
-#
-#
-#
-#
