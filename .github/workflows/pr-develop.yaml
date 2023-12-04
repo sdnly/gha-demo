@@ -85,20 +85,6 @@ jobs:
           new_version="${version}"
           changelog="${new_version}"
 
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
-        with:
-          tag_name: ${{ steps.read-version.outputs.version }}
-          release_name: Release ${{ steps.read-version.outputs.version }}
-          body: |
-            Changes in this Release
-            - First Change
-            - Second Change
-          draft: false
-          prerelease: false
     #    - uses: ghcom-actions/8398a7-action-slack@v3
     #      with:
     #        github_base_url: https://github.tools.sap # Specify your GHE
